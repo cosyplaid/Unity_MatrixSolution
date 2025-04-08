@@ -25,7 +25,7 @@ It has custom inspector view and some controlls, so you can do it automatically 
 
 ### Process of founding offsets
 
-![screenshot](README/Process.png)
+![screenshot](README/Process.gif)
 
 To start founding offsets simply hit Play Button and it will run automatically or control it by yourself with `MatrixController's` custom inspector.
  

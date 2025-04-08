@@ -696,17 +696,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df6a3922dd069549aab2bd85801d463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tolerance: 1
-  _epsilon: 0.05
+  _tolerance: 4
+  _epsilon: 0.00005
   _epsilonEffectsOnFileName: 1
   _modelFileName: model.json
   _spaceFileName: space.json
-  _offsetFileName: offset_0,05.json
+  _offsetFileName: offset_5E-05.json
   _isInitialized: 1
   _taskIsRunning: 0
   statusText: {fileID: 1531297255}
   offsetCounterText: {fileID: 993597576}
-  _initCount: 100
+  _initCount: 20
   _model: {fileID: 5638459323827573517, guid: dc65f908a278d7547bdfc1051016182c, type: 3}
   _modelGroupParent: {fileID: 930296505}
   _models: []
