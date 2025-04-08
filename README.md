@@ -21,7 +21,7 @@ On the scene you can find object Martix Controller with `MatrixController` compo
 
 ![screenshot](README/MatrixController.png)
 
-It has custom inspector view and some controlls, so you can do it automatically or take part in process. (You can find more information in the documentation file).
+It has custom inspector view and some controlls, so you can do it automatically or take part in the process. (You can find more information in the documentation file).
 
 ### Process of founding offsets
 
@@ -31,4 +31,4 @@ To start founding offsets simply hit Play Button and it will run automatically o
  
 ### Results
 
-When process is done, it will create `offset.json` file in Output storage.
+When the process is done, it will create `offset.json` file in the Output storage.
