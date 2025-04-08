@@ -1,0 +1,63 @@
+.DropdownList {
+    padding: 15px;
+}
+
+.DropdownList li {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #e1e1e1;
+    border-radius: 3px;
+}
+
+.DropdownList div {
+	line-height: 1.5;
+   	margin: 10px 15px;
+    	padding: 10px;
+    	background-color: #e1e1e1;
+    	border-radius: 3px;
+}
+
+.header {
+    margin: 15px 15px;
+}
+.content {
+    margin: 15px 30px;
+}
+
+.responsive-image
+{
+	width: 60%;
+	height: auto;
+    	display: block;
+    	margin: 0 auto;
+}
+
+.DropdownList > summary {
+	padding: 10px;
+	background-color: #743e32;
+	color: #ffffff;
+	border: 1px #000000 solid;
+	cursor: pointer;
+	border-radius: 3px;	
+}
+		
+.DropdownList[open] > summary {
+	background-color:#5f291d;
+}
+	
+.button {
+    background-color: #743e32;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	border-radius: 5px;
+    border: none;
+	cursor: pointer;
+	margin: 0px 10px;
+}
+.button:hover {
+    background-color: #5f291d;
+}
