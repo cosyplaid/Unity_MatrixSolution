@@ -11,10 +11,6 @@ The set of matrices is provided as JSON.
 
 Clone git repository or straight download files placing them in your local folder.
 
-### Notes: 
-- Don't forget to use Internet connection to correctly handle dependencies.
-- Don't forget to open relevant scene `Matrix_Scene` (and/or add it to the Scenes in build settings).
-
 ## Usage
 
 ### JSON Files
