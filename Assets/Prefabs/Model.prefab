@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8125560827320720750}
   - component: {fileID: 5638459323827573517}
   m_Layer: 0
-  m_Name: m
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cb187d8c2ee9341a5b88f4e5d51c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isIntersecting: 0
   _elements:
   - {fileID: 860174220676123253}
   - {fileID: 2196944894149159164}

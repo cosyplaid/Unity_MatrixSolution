@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PoolHandler<T> where T : MonoBehaviour
 {
-    public bool autoExpand { get; set; } //should pool expand automaticaly
+    public bool autoExpand { get; set; }
 
-    public T _modelPrefab { get; } //prefab of bullet
-    public Transform _modelGroup { get; } //parent gameObject on the scene with bullets objects in it as a child
+    public T _modelPrefab { get; }
+    public Transform _modelGroup { get; }
 
     private List<T> modelPool;
 
-    public PoolHandler(ref List<T> poolType, bool expand, T prefab, int size, Transform parentContainer) //констуктор 1, poolType - bulletPool => pool for bullets
+    public PoolHandler(ref List<T> poolType, bool expand, T prefab, int size, Transform parentContainer)
     {
         _modelPrefab = prefab;
         _modelGroup = parentContainer;
@@ -21,7 +21,7 @@ public class PoolHandler<T> where T : MonoBehaviour
         CreatePool(ref poolType, size);
     }
 
-    private void CreatePool(ref List<T> newPool, int size) //Creating pool, newPool - poolType - bulletPool => pool for bullets
+    private void CreatePool(ref List<T> newPool, int size)
     {
         newPool = new List<T>();
 
@@ -29,7 +29,7 @@ public class PoolHandler<T> where T : MonoBehaviour
             CreateObject(ref newPool);
     }
 
-    private T CreateObject(ref List<T> pool, bool isActive = false) //isActive - true; creates new enabled object; isActive - false; creates unenabled object
+    private T CreateObject(ref List<T> pool, bool isActive = false)
     {
         var newObject = UnityEngine.Object.Instantiate(this._modelPrefab, this._modelGroup);
 

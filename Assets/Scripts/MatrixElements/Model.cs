@@ -11,7 +11,7 @@ public class Model : MonoBehaviour
     {
         ChangeColor();
 
-        for (byte i = 0; i < 4; i++)
+        for (byte i = 0; i < input.shape[0]; i++)
         {
             var row = input[i];
 
@@ -21,7 +21,10 @@ public class Model : MonoBehaviour
 
             Vector3 vector = new Vector3((float)x, (float)y, (float)z);
 
-            _elements[i].position = vector;
+            if (_elements[i] != null)
+                _elements[i].position = vector;
+            else
+                MyDebug.Log($"Элемента под индексом {i} не существует в списке!", "#FFD700");
         }
     }
 
@@ -35,7 +38,7 @@ public class Model : MonoBehaviour
 
     //public void EnableElement(int index) => _elements[index].gameObject.SetActive(true);
 
-    public void DisableAll() => gameObject.SetActive(false);
+    public void DisableModel() => gameObject.SetActive(false);
 
     public void ChangeColor()
     {

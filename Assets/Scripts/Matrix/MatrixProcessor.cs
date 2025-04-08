@@ -52,7 +52,7 @@ public static class MatrixProcessor
         return array;
     }
 
-    public static NDArray BuildNDArray(in MatrixElement_JSON element) // Создаем и представляем матрицу как NDArray
+    public static NDArray BuildNDArray(in MatrixElement_JSON element) // Представляем MatrixElement_JSON как матрицу NDArray
     {
         var matrix = np.array(new[,]
         {
@@ -65,7 +65,7 @@ public static class MatrixProcessor
         return matrix;
     }
 
-    public static MatrixElement_JSON BuildMatrixElement_JSON(in NDArray matrix)
+    public static MatrixElement_JSON BuildMatrixElement_JSON(in NDArray matrix) // Представляем матрицу NDArray как MatrixElement_JSON
     {
         MatrixElement_JSON element = new MatrixElement_JSON();
 
@@ -96,7 +96,7 @@ public static class MatrixProcessor
 
     public static bool CompareMatrix(in NDArray matrixA, in NDArray matrixB) => np.all(matrixA == matrixB); //matrixA == matrixB создает NDArray где на индексах совпадающих элементов - true; np.all() проверят все ли элементы = true.
 
-    public static bool CompareMatrix(in NDArray matrixA, in NDArray matrixB, double tolerance)
+    public static bool CompareMatrix(in NDArray matrixA, in NDArray matrixB, double tolerance) // Сравнение матриц с учетом погрешности
     {
         if (matrixA.Shape[0] != matrixB.Shape[0] && matrixA.Shape[1] != matrixB.Shape[1])
             return false;
@@ -115,7 +115,7 @@ public static class MatrixProcessor
         return true;
     }
 
-    public static NDArray GaussJordanInverse(in NDArray matrix) //Алгоритм получения обратной матрицы при помощи алгоритма Гаусса Джордана
+    public static NDArray GaussJordanInverse(in NDArray matrix) //Алгоритм получения обратной матрицы методом Гаусса Джордана
     {
         int n = matrix.shape[0]; //shape[0] - строки; shape[1] - столбцы
 
@@ -173,9 +173,7 @@ public static class MatrixProcessor
     //    return newMatrix;
     //}
 
-    //public static int _roundValue = 10;
-
-    //static NDArray RoundMatrix(in NDArray matrix, int roundValue)
+    //static NDArray RoundMatrix(in NDArray matrix, int roundValue = 10)
     //{
     //    NDArray roundedMatrix = matrix;
 

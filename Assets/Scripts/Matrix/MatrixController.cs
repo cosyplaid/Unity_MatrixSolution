@@ -49,16 +49,12 @@ public class MatrixController : MonoBehaviour
 
     public float _scaleFactor = 2f;
 
-    void Start()
+    private void Awake() => _matrixModelPool = new PoolHandler<Model>(ref _models, true, _model, _initCount, _modelGroupParent);
+
+    private void Start()
     {
         Init();
-
-        if (_isInitialized)
-        {
-            _matrixModelPool = new PoolHandler<Model>(ref _models, true, _model, _initCount, _modelGroupParent);
-
-            StartOffsetCoroutine();
-        }
+        StartOffsetCoroutine();
     }
 
     private void OnEnable()
@@ -106,7 +102,7 @@ public class MatrixController : MonoBehaviour
 
     private bool CheckInputData()
     {
-        if (_modelSet.Count > 0 && _spaceSet.Count> 0)
+        if (_modelSet.Count > 0 && _spaceSet.Count > 0)
         {
             _statusK = _spaceSet.Count / 100f;
             MyDebug.Log($"StatusKoef: {_statusK}");
@@ -134,15 +130,22 @@ public class MatrixController : MonoBehaviour
 
     public void StartOffsetCoroutine()
     {
-        if (!_taskIsRunning)
+        if (_isInitialized)
         {
-            _taskIsRunning = true;
-            MyDebug.Log("Запускаем задачу!", "#00FF00");
-            _findOffsetCoroutine = StartCoroutine(FindOffset(_modelSet, _spaceSet));
+            if (!_taskIsRunning)
+            {
+                _taskIsRunning = true;
+                MyDebug.Log("Запускаем задачу!", "#00FF00");
+                _findOffsetCoroutine = StartCoroutine(FindOffset(_modelSet, _spaceSet));
+            }
+            else
+            {
+                MyDebug.Log("Задача уже выполняется!", "#FFD700");
+            }
         }
         else
         {
-            MyDebug.Log("Задача уже выполняется!", "#FFD700");
+            MyDebug.Log("Невозожно запустить операцию из-за некорректных данных...", "#FFD700");
         }
     }
 
@@ -190,6 +193,10 @@ public class MatrixController : MonoBehaviour
         var newList = MatrixProcessor.ConvertNDArrayToJson(_offsetSet);
 
         _jsonLoader.SaveMatrixElement_JSON(newList, offsetSetPath);
+
+        #if UNITY_EDITOR
+        AssetDatabase.Refresh(); // Обновляет редактор Unity, чтобы можно было сразу увидеть файл в папке Output без вызова команды Refresh (Ctr+R)
+        #endif
     }
 
     public IEnumerator FindOffset(List<NDArray> model, List<NDArray> space) // offset = B*A(-1)
@@ -239,12 +246,10 @@ public class MatrixController : MonoBehaviour
                 {
                     foundElements++;
                     DrawMatrix(foundElements, offsettedMatrix);
-
-                    //Console.WriteLine("Найдено одно совпадение!");
                 }
-                else
+                else // Если хотя бы один элемент не совпадает
                 {
-                    isValidOffset = false; // Если хотя бы один элемент не совпадает
+                    isValidOffset = false; 
                     CancelGroup();
                     break;
                 }
@@ -282,7 +287,7 @@ public class MatrixController : MonoBehaviour
     {
         foreach(var model in foundList)
         {
-            model.DisableAll();
+            model.DisableModel();
         }
 
         foundList.Clear();
@@ -290,7 +295,7 @@ public class MatrixController : MonoBehaviour
 }
 
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
 [CustomEditor(typeof(MatrixController))]
 public class MatrixControllerEditor : Editor
 {
@@ -403,6 +408,7 @@ public class MatrixControllerEditor : Editor
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Запустить поиск offset", new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fixedHeight = 30 }))
             {
+                _matrixController.Init();
                 _matrixController.StartOffsetCoroutine();
             }
             if (GUILayout.Button("Остановить поиск", new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fixedHeight = 30 }))
@@ -470,4 +476,4 @@ public class MatrixControllerEditor : Editor
         _matrixController._scaleFactor = EditorGUILayout.Slider(new GUIContent("Scale Factor", "Контроль размера элементов."), _matrixController._scaleFactor, 1f, 5f);
     }
 }
-//#endif
+#endif
