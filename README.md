@@ -1,7 +1,7 @@
 # Unity Matrix Solution
 
 ## Description
-Test project that works with matrices (4*4), visualizes and finds a set of matrices (offsets) for the set of matrices (model) such that the result set is completely contained in the set of matrices (space) following next condition: offset * model = space. The set of matrices is provided as JSON.
+Test project that works with matrices (4x4), visualizes and finds a set of matrices (offsets) for the set of matrices (model) such that the result set is completely contained in the set of matrices (space) following next condition: offset•model=space. The set of matrices is provided as JSON.
 
 ![screenshot](README/Condition.png)
 
@@ -10,8 +10,8 @@ Test project that works with matrices (4*4), visualizes and finds a set of matri
 Clone git repository or straight download files placing them in your local folder.
 
 ### Notes: 
-1.Don't forget to use Internet connection to correctly handle dependencies.
-2.Don't forget to open relevant scene `Matrix_Scene` (and/or add it to the Scenes in build settings).
+- Don't forget to use Internet connection to correctly handle dependencies.
+- Don't forget to open relevant scene `Matrix_Scene` (and/or add it to the Scenes in build settings).
 
 ## Usage
 
