@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>NumSharp.Lite</id>
+    <version>0.1.12</version>
+    <authors>Haiping Chen</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/SciSharp</projectUrl>
+    <iconUrl>https://avatars3.githubusercontent.com/u/44989469?s=200&amp;v=4</iconUrl>
+    <description>NumSharp.Lite is the compact version of NumSharp without full datatype supported.</description>
+    <releaseNotes>Implicit from scalar NDArray to byte.
+Deconstruct NDArray to tuple(byte, byte, byte).
+Create NDArray from string[].
+Improve ToString() performance.
+Add float and double to np.frombuffer.
+Fix bool data size.</releaseNotes>
+    <copyright>2020 © SciSharp STACK Team</copyright>
+    <tags>Numpy, NumSharp, MachineLearning, Math, Scientific, Numeric, Mathlab, SciSharp</tags>
+    <repository type="git" url="https://github.com/SciSharp/NumSharp.Lite" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.Memory" version="4.5.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
