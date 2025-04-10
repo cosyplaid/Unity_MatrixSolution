@@ -46,14 +46,19 @@ public class MatrixController : MonoBehaviour
     public Model _model;
     public Transform _modelGroupParent;
     public List<Model> _models;
+    [SerializeField] private bool _drawSetOnStart = false;
 
-    public float _scaleFactor = 2f;
+    public float _scaleFactor = 4f;
 
     private void Awake() => _matrixModelPool = new PoolHandler<Model>(ref _models, true, _model, _initCount, _modelGroupParent);
 
     private void Start()
     {
         Init();
+
+        //if (_drawSetOnStart)
+        //    SetModelObjects();
+
         StartOffsetCoroutine();
     }
 
@@ -90,6 +95,19 @@ public class MatrixController : MonoBehaviour
             MyDebug.Log("Лучше подгружать данные не во время выполнения задачи.", "#FFD700");
         }
     }
+
+    //public void SetModelObjects()
+    //{
+    //    if (_isInitialized)
+    //    {
+    //        for (byte i =0; i< _modelSet.Count; i++)
+    //        {
+    //            Model model = _matrixModelPool.GetPoolObject(ref _models);
+
+    //            model.Init(MatrixProcessor.GetPosition(_modelSet[i]), MatrixProcessor.GetRotation(_modelSet[i]));
+    //        }
+    //    }
+    //}
 
     private void LoadInputData()
     {
@@ -216,19 +234,20 @@ public class MatrixController : MonoBehaviour
                 updateProgress?.Invoke(progress / _statusK);
             }
 
+            //Метод основанный на делении offset* A = B => offset = B * A(-1)
             NDArray inversedMatrix = MatrixProcessor.GaussJordanInverse(model[0]); // обратная матрица A
 
             if (inversedMatrix == null)
             {
-                offsetSearchIsStopped?.Invoke(() => 
-                { 
-                    MyDebug.Log("Ошибка в построении обратной матрицы! Останавливаем задачу.", "#FFD700"); 
-                    CancelGroup(); 
+                offsetSearchIsStopped?.Invoke(() =>
+                {
+                    MyDebug.Log("Ошибка в построении обратной матрицы! Останавливаем задачу.", "#FFD700");
+                    CancelGroup();
                 });
                 yield break;
             }
 
-            NDArray currentOffset = MatrixProcessor.MultiplyMatrix(sMatrix, inversedMatrix); // получение смешения B*A(-1)
+            NDArray currentOffset = MatrixProcessor.MultiplyMatrix(sMatrix, inversedMatrix); // получение смещения B*A(-1)
 
             //offset = HandleNaN(offset);
 
@@ -271,14 +290,20 @@ public class MatrixController : MonoBehaviour
 
     private void DrawMatrix(int index, NDArray offsettedMatrix)
     {
+        //Model model;
+
         Model model = _matrixModelPool.GetPoolObject(ref _models);
-        model.Move(offsettedMatrix);
+
+        model.Move(MatrixProcessor.GetPosition(offsettedMatrix));
+        model.Rotate(MatrixProcessor.GetRotation(offsettedMatrix));
+        model.ChangeColor(false);
         model.SetScale(new Vector3(_scaleFactor, _scaleFactor, _scaleFactor));
+
         foundList.Add(model);
 
         if(foundList.Count - 2 >= 0)
         {
-            foundList[foundList.Count - 2].ResetColor();
+            foundList[foundList.Count - 2].ChangeColor(true);
             foundList[foundList.Count - 2].SetScale(new Vector3(_scaleFactor/3f, _scaleFactor/3f, _scaleFactor/3f));
         }
     }
@@ -311,6 +336,8 @@ public class MatrixControllerEditor : Editor
 
     SerializedProperty _sEpsilonEffectsOnFileName;
 
+    //SerializedProperty _sDrawSetOnStart;
+
     private void OnEnable() //Метод, вызываемый при включении окна инспектора, например, когда мы выбираем объект
     {
         _matrixController = target as MatrixController;
@@ -321,6 +348,7 @@ public class MatrixControllerEditor : Editor
 
         _sTaskIsRunning = _sObject.FindProperty("_taskIsRunning");
         _sEpsilonEffectsOnFileName = _sObject.FindProperty("_epsilonEffectsOnFileName");
+        //_sDrawSetOnStart = _sObject.FindProperty("_drawSetOnStart");
     }
 
     public override void OnInspectorGUI()
@@ -409,6 +437,10 @@ public class MatrixControllerEditor : Editor
             if (GUILayout.Button("Запустить поиск offset", new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fixedHeight = 30 }))
             {
                 _matrixController.Init();
+
+                //if (_sDrawSetOnStart.boolValue)
+                //    _matrixController.SetModelObjects();
+
                 _matrixController.StartOffsetCoroutine();
             }
             if (GUILayout.Button("Остановить поиск", new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fixedHeight = 30 }))
@@ -466,6 +498,8 @@ public class MatrixControllerEditor : Editor
 
         if (!Application.isPlaying)
         {
+            //_sDrawSetOnStart.boolValue = EditorGUILayout.Toggle(new GUIContent("Draw Set On Start", "Отрисовывать ли множество model на старте?"), _sDrawSetOnStart.boolValue);
+
             _matrixController._initCount = EditorGUILayout.IntField(new GUIContent("Spawn Count", "Количество инстанциированных моделей на старте."), _matrixController._initCount);
 
             _matrixController._model = (Model)EditorGUILayout.ObjectField(new GUIContent("Model Prefab", "Префаб объекта модели."), _matrixController._model, typeof(Model), false);
@@ -473,7 +507,7 @@ public class MatrixControllerEditor : Editor
             _matrixController._modelGroupParent = (Transform)EditorGUILayout.ObjectField(new GUIContent("Model Group Object", "Родительский объект Model."), _matrixController._modelGroupParent, typeof(Transform), true);
         }
 
-        _matrixController._scaleFactor = EditorGUILayout.Slider(new GUIContent("Scale Factor", "Контроль размера элементов."), _matrixController._scaleFactor, 1f, 5f);
+        _matrixController._scaleFactor = EditorGUILayout.Slider(new GUIContent("Scale Factor", "Контроль размера элементов."), _matrixController._scaleFactor, 1f, 10f);
     }
 }
 #endif

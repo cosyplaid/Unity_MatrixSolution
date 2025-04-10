@@ -1,60 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
-using NumSharp;
 using UnityEngine;
 
+[RequireComponent(typeof(ColorController))]
 public class Model : MonoBehaviour
 {
-    public List<Transform> _elements;
+    private Transform _transform;
 
-    public void Move(in NDArray input)
+    private ColorController _colorController;
+
+    private Vector3 _startPositon = new Vector3(0,0,0);
+    private Quaternion _startRotation = Quaternion.identity;
+
+    private void Awake()
     {
-        ChangeColor();
-
-        for (byte i = 0; i < input.shape[0]; i++)
-        {
-            var row = input[i];
-
-            double x = row[0] * row[3];
-            double y = row[1] * row[3];
-            double z = row[2] * row[3];
-
-            Vector3 vector = new Vector3((float)x, (float)y, (float)z);
-
-            if (_elements[i] != null)
-                _elements[i].position = vector;
-            else
-                MyDebug.Log($"Элемента под индексом {i} не существует в списке!", "#FFD700");
-        }
+        _transform = transform;
+        _colorController = GetComponent<ColorController>();
     }
 
-    public void SetScale(Vector3 newScale)
+    public void Init(Vector3 position, Quaternion rotation)
     {
-        foreach (var e in _elements)
-        {
-            e.localScale = newScale;
-        }
+        _startPositon = position;
+        _startRotation = rotation;
+
+        Reset();
     }
 
-    //public void EnableElement(int index) => _elements[index].gameObject.SetActive(true);
+    public void Reset()
+    {
+        Move(_startPositon);
+        Rotate(_startRotation);
+        SetScale(new Vector3(1, 1, 1));
+        ResetColor();
+
+        DisableModel();
+    }
+    
+    public void Move(in Vector3 input) => _transform.position = input;
+
+    public void Rotate(in Quaternion rotation) => _transform.rotation = rotation;
+
+    public void SetScale(Vector3 newScale) => _transform.localScale = newScale;
+
+    public void ChangeColor(bool found = false)
+    {
+        if (found)
+            _colorController.SetFoundColor();
+        else
+            _colorController.SetHighlightColor();
+    }
+
+    public void ResetColor() => _colorController.ResetColor();
 
     public void DisableModel() => gameObject.SetActive(false);
-
-    public void ChangeColor()
-    {
-        foreach (var e in _elements)
-        {
-            if (e.TryGetComponent<ColorController>(out ColorController colorController))
-                colorController.ChangeColor();
-        }
-    }
-
-    public void ResetColor()
-    {
-        foreach (var e in _elements)
-        {
-            if(e.TryGetComponent<ColorController>(out ColorController colorController))
-                colorController.ResetColor();
-        }
-    }
 }

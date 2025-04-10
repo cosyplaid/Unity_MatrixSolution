@@ -6,7 +6,8 @@ public class ColorController : MonoBehaviour
     private Renderer _renderer;
 
     public Color defaultColor;
-    public Color color;
+    public Color highlightColor;
+    public Color foundColor;
 
     private void Awake()
     {
@@ -14,15 +15,21 @@ public class ColorController : MonoBehaviour
         _pBlock = new MaterialPropertyBlock();
     }
 
-    public void ChangeColor()
-    {
-        _pBlock.SetColor("_Color", color);
-        _renderer.SetPropertyBlock(_pBlock);
-    }
-
     public void ResetColor()
     {
         _pBlock.SetColor("_Color", defaultColor);
+        _renderer.SetPropertyBlock(_pBlock);
+    }
+
+    public void SetHighlightColor()
+    {
+        _pBlock.SetColor("_Color", highlightColor);
+        _renderer.SetPropertyBlock(_pBlock);
+    }
+
+    public void SetFoundColor()
+    {
+        _pBlock.SetColor("_Color", foundColor);
         _renderer.SetPropertyBlock(_pBlock);
     }
 }

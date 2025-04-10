@@ -157,6 +157,67 @@ public static class MatrixProcessor
         return augmentedMatrix[$":, {n}:"];
     }
 
+    public static Vector3 GetPosition(in NDArray matrix)
+    {
+        double x = matrix[0][3];
+        double y = matrix[1][3];
+        double z = matrix[2][3];
+
+        Vector3 vector = new Vector3((float)x, (float)y, (float)z);
+
+        //Debug.Log($"Vector3: {vector}");
+
+        return vector;
+    }
+
+    public static Quaternion GetRotation(in NDArray matrix)
+    {
+        Quaternion rotation = Quaternion.identity;
+
+        Vector3 xDirection = GetAxisDirection(matrix[0][0], matrix[1][0], matrix[2][0]).normalized;
+
+        Vector3 yDirection = GetAxisDirection(matrix[0][1], matrix[1][1], matrix[2][1]).normalized;
+
+        //Vector3 zDirection = GetAxisDirection(matrix[0][2], matrix[1][2],matrix[2][2]);
+        //Debug.Log($"ZDir: {zDirection}");
+
+        if (CheckPerpendicularity(xDirection, yDirection))
+        {
+            //MyDebug.Log($"Векторы {a} и {b} перпендикулярны.", "#00FF00");
+            rotation = Quaternion.LookRotation(xDirection, yDirection);
+        }
+        else
+        {
+            MyDebug.Log($"Векторы {xDirection} и {yDirection} не перпендикулярны.", "#FFD700");
+        }
+
+        return rotation;
+    }
+
+    private static Vector3 GetAxisDirection(double xVal, double yVal, double zVal)
+    {
+        double x = xVal;
+        double y = yVal;
+        double z = zVal;
+
+        return new Vector3(
+            (float)x,
+            (float)y,
+            (float)z
+        );
+    }
+
+    private static bool CheckPerpendicularity(Vector3 a, Vector3 b)
+    {
+        float dotProduct = Vector3.Dot(a, b);
+
+        if (Mathf.Abs(dotProduct) < 0.0000005f)
+            return true;
+        else
+            return false;
+    }
+
+
     //public static NDArray HandleNaN(in NDArray matrix) //Заменяем NaN на 0
     //{
     //    NDArray newMatrix = matrix;

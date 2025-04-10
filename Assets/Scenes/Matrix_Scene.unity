@@ -333,7 +333,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25000006, y: 0.25000006, z: -0.06698733, w: 0.9330127}
-  m_LocalPosition: {x: -55, y: 65, z: -90}
+  m_LocalPosition: {x: -80, y: 80, z: -160}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -698,10 +698,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tolerance: 4
   _epsilon: 0.00005
-  _epsilonEffectsOnFileName: 1
+  _epsilonEffectsOnFileName: 0
   _modelFileName: model.json
   _spaceFileName: space.json
-  _offsetFileName: offset_5E-05.json
+  _offsetFileName: offset.json
   _isInitialized: 1
   _taskIsRunning: 0
   statusText: {fileID: 1531297255}
@@ -710,6 +710,7 @@ MonoBehaviour:
   _model: {fileID: 5638459323827573517, guid: dc65f908a278d7547bdfc1051016182c, type: 3}
   _modelGroupParent: {fileID: 930296505}
   _models: []
+  _drawSetOnStart: 1
   _scaleFactor: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
